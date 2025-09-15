@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const sheetUrl = 'https://cors-anywhere.herokuapp.com/https://docs.google.com/spreadsheets/d/1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc/gviz/tq?tqx=out:csv';
+    const sheetUrl = '/api/get-sheet-data';
     const questionGrid = document.getElementById('question-grid');
     const locationFilter = document.getElementById('location-filter');
     const genderFilter = document.getElementById('gender-filter');
