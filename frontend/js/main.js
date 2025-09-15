@@ -94,7 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 5. GOOGLE SHEET DATA FOR TRENDING INSIGHT
-    const sheetUrl = 'https://cors-anywhere.herokuapp.com/https://docs.google.com/spreadsheets/d/1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc/gviz/tq?tqx=out:csv';
+    // FIXED: Changed this URL to use the serverless function
+    const sheetUrl = '/api/get-sheet-data';
     
     const trendingHeadline = document.getElementById('trending-headline');
     const trendingQuestionTitle = document.getElementById('trending-question-title');
