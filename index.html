@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Know Them Better | What Do We Truly Want?</title>
+    <meta name="description" content="A non-profit platform collecting real-time data from men and women to reduce miscommunication and build empathy.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="frontend/css/style.css">
+
+    <script src="frontend/js/main.js" defer></script>
+</head>
+<body>
+
+    <header class="page-header">
+        <a href="#hero" class="logo">
+            <span class="logo-main">Know Them <strong>Better</strong></span>
+            <span class="logo-sub">A twish.life Initiative</span>
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#data-explorer">Explore Data</a></li>
+                <li><a href="#our-values">Our Values</a></li>
+            </ul>
+        </nav>
+        <a href="#submit-question" class="cta-button header-cta">Ask a Question</a>
+    </header>
+
+    <main>
+        <section id="hero" class="fullscreen-panel">
+            <div class="panel-content reveal-on-scroll">
+                <h1 class="hero-title"></h1>
+                <p class="sub-headline">Real voices. On-the-ground insight. No filters.</p>
+                
+                <div class="perspective-selector">
+                    <p>Explore the perspective of...</p>
+                    <div class="perspective-buttons">
+                        <a href="#data-explorer" class="perspective-btn btn-him">He/Him</a>
+                        <a href="#data-explorer" class="perspective-btn btn-her">She/Her</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="fullscreen-panel">
+            <div class="panel-content reveal-on-scroll">
+                <h2>Our Unique Process</h2>
+                <div class="steps-grid">
+                    <div class="step-card animate-up">
+                        <i class="fa-solid fa-lightbulb icon"></i>
+                        <h3>1. You Ask a Question</h3>
+                        <p>What do you wish you understood better? Submit your question to our platform.</p>
+                    </div>
+                    <div class="step-card animate-up">
+                        <i class="fa-solid fa-street-view icon"></i>
+                        <h3>2. We Go On-Ground</h3>
+                        <p>Our team takes the best questions to real people in diverse communities for raw, honest answers.</p>
+                    </div>
+                    <div class="step-card animate-up">
+                        <i class="fa-solid fa-chart-line icon"></i>
+                        <h3>3. We All Understand</h3>
+                        <p>The anonymous insights are visualized here, creating a public library of human understanding.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="data-explorer" class="fullscreen-panel">
+            <div class="insight-card-container panel-content reveal-on-scroll">
+                <h2>Explore the Insights</h2>
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="location">Location:</label>
+                        <select id="location" name="location">
+                            <option value="all">All</option>
+                            <option value="kochi">Kochi</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Age Group:</label>
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">18-25</button>
+                        <button class="filter-btn">26-35</button>
+                        <button class="filter-btn">35+</button>
+                    </div>
+                </div>
+                
+                <p class="chart-title" id="chart-title">What is the most important quality in a partner?</p>
+                
+                <div class="chart-container" id="chart-container">
+                    <p class="loading-text">Loading insights...</p>
+                </div>
+
+                <div class="common-ground-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="common-ground-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <span>Show Common Ground</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="submit-question" class="fullscreen-panel">
+             <div class="panel-content reveal-on-scroll">
+                <h2>Help Us Find the Answers.</h2>
+                <p class="sub-headline">What misunderstanding do you want to clear up? What do you wish you knew? Your curiosity fuels our mission.</p>
+                
+                <form class="question-form">
+                    <div class="form-step active" id="form-step-1">
+                        <textarea name="question" placeholder="e.g., What does 'giving space' in a relationship really mean to you?" required></textarea>
+                        <button type="button" class="cta-button" id="next-step-btn">Next: Add Details</button>
+                    </div>
+                    <div class="form-step" id="form-step-2">
+                        <p class="form-step-title">Tell us a little about yourself (optional)</p>
+                        <div class="demographic-grid">
+                            <div class="input-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" name="age" min="13" max="120" placeholder="e.g., 28">
+                            </div>
+                            <div class="input-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender">
+                                    <option value="">Select...</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="transgender">Transgender</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="orientation">Orientation</label>
+                                <select id="orientation" name="orientation">
+                                    <option value="">Select...</option>
+                                    <option value="straight">Straight</option>
+                                    <option value="gay">Gay</option>
+                                    <option value="lesbian">Lesbian</option>
+                                    <option value="bisexual">Bisexual</option>
+                                </select>
+                            </div>
+                             <div class="input-group">
+                                <label for="status">Marital Status</label>
+                                <select id="status" name="status">
+                                    <option value="">Select...</option>
+                                    <option value="single">Single</option>
+                                    <option value="in-relationship">In a relationship</option>
+                                    <option value="married">Married</option>
+                                    <option value="divorced">Divorced</option>
+                                    <option value="widowed">Widowed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="cta-button secondary">Submit Anonymously</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <section id="our-values" class="fullscreen-panel">
+            <div class="panel-content reveal-on-scroll">
+                <h2>Our Guiding Principles</h2>
+                <div class="values-bar">
+                    <div class="value-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Authenticity</h3>
+                        <p>Raw, real, unfiltered (but respectful) voices.</p>
+                    </div>
+                    <div class="value-badge">
+                        <i class="fas fa-search"></i>
+                        <h3>Curiosity</h3>
+                        <p>A genuine desire to understand, not to judge.</p>
+                    </div>
+                    <div class="value-badge">
+                        <i class="fas fa-handshake"></i>
+                        <h3>Bridging</h3>
+                        <p>Building connections, not highlighting divisions.</p>
+                    </div>
+                    <div class="value-badge">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Clarity</h3>
+                        <p>Making complex emotions understandable through data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="get-involved" class="fullscreen-panel">
+            <div class="panel-content reveal-on-scroll">
+                <h2>Join The Mission</h2>
+                <p class="sub-headline">This project is powered by people like you. Help us gather more stories and build a more understanding world.</p>
+                <div class="support-grid">
+                    <div class="support-card">
+                        <i class="fas fa-hands-helping"></i>
+                        <h3>Volunteer</h3>
+                        <p>Help us with on-the-ground data collection, community outreach, or content moderation.</p>
+                        <a href="#" class="cta-button support-btn btn-volunteer">Apply to Volunteer</a>
+                    </div>
+                    <div class="support-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>Donate</h3>
+                        <p>Your contribution helps fund our research, maintain the platform, and expand our reach to new communities.</p>
+                        <a href="#" class="cta-button support-btn btn-donate">Donate Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="page-footer">
+        <h3>Join the Conversation</h3>
+        <p>Follow us for daily insights and stories.</p>
+        <p class="footer-credit">&copy; 2025 Know Them Better - powered by twish.life</p>
+    </footer>
+
+</body>
+</html>
