@@ -4,7 +4,8 @@
 export default async function handler(request, response) {
   const sheetId = '1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc';
   // Note: We use the '/gviz/tq' endpoint which is a simpler way to get sheet data.
-  const sheetUrl = '/api/get-sheet-data';
+  // FIXED: This now correctly points to the Google Sheet URL.
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
 
   try {
     const fetchResponse = await fetch(sheetUrl);
