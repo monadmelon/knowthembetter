@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights Explorer - Know Them Better</title>
+    <meta name="description" content="Explore and filter our on-the-ground data to understand different perspectives.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="frontend/css/style.css">
+    <link rel="stylesheet" href="frontend/css/insights.css">
+
+    <script src="frontend/js/insights.js" defer></script>
+</head>
+<body>
+
+    <header class="page-header">
+        <a href="index.html" class="logo">
+            <span class="logo-main">Know Them <strong>Better</strong></span>
+            <span class="logo-sub">A twish.life Initiative</span>
+        </a>
+        <nav class="main-nav">
+             <ul>
+                <li><a href="index.html#how-it-works">How It Works</a></li>
+                <li><a href="insights.html">Explore Data</a></li>
+                <li><a href="index.html#our-values">Our Values</a></li>
+            </ul>
+        </nav>
+        <a href="index.html#submit-question" class="cta-button header-cta">Ask a Question</a>
+    </header>
+
+    <main class="insights-main">
+        <section class="insights-hero">
+            <h1>The Insights Explorer</h1>
+            <p class="sub-headline">Filter and compare our on-the-ground data to see the world from a different perspective.</p>
+        </section>
+
+        <section class="insights-dashboard">
+            <div class="global-filters" id="global-filters">
+                <div class="filter-group">
+                    <label for="location-filter">Location:</label>
+                    <select id="location-filter" name="location">
+                        <option value="all">All</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="gender-filter">Gender:</label>
+                    <select id="gender-filter" name="gender">
+                        <option value="all">All</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="status-filter">Status:</label>
+                    <select id="status-filter" name="status">
+                        <option value="all">All</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="age-filter">Age:</label>
+                    <select id="age-filter" name="age">
+                        <option value="all">All</option>
+                        <option value="18-25">18-25</option>
+                        <option value="26-35">26-35</option>
+                        <option value="35+">35+</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="question-grid" id="question-grid">
+                <p class="loading-text">Loading insights...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <h3>Join the Conversation</h3>
+        <p>Follow us for daily insights and stories.</p>
+        <p class="footer-credit">&copy; 2025 Know Them Better - powered by twish.life</p>
+    </footer>
+
+</body>
+</html>

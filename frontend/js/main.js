@@ -1,15 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ---
-    // SECTIONS 1-5 are the same as before
-    // ---
 
-    // 1. Transparent Header on Scroll
+    // 1. Transparent Header on Scroll & Scroll Indicator Hiding
     const header = document.querySelector('.page-header');
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+
     window.addEventListener('scroll', () => {
+        // Handle header background
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
+        }
+
+        // Handle scroll indicator hiding
+        if (scrollIndicator && window.scrollY > 20) {
+            scrollIndicator.classList.add('hidden');
         }
     });
 
@@ -28,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
     animatedElements.forEach(el => observer.observe(el));
+
 
     // 3. DYNAMIC TYPING ANIMATION FOR HERO TITLE
     const typingElement = document.querySelector('.hero-title');
@@ -87,20 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. GOOGLE SHEET DATA & INTERACTIVE CHART LOGIC
-    const sheetUrl = '/api/get-sheet-data';
-    const chartContainer = document.getElementById('chart-container');
-    const chartTitle = document.getElementById('chart-title');
-    const commonGroundToggle = document.getElementById('common-ground-checkbox');
-    const locationFilter = document.getElementById('location');
-    const ageFilterButtons = document.querySelectorAll('.filter-group .filter-btn');
-
-    // --- State Management ---
-    let masterData = []; // To store the full dataset once fetched
-    let currentFilters = {
-        location: 'all',
-        ageGroup: 'all'
-    };
+    // 5. GOOGLE SHEET DATA FOR TRENDING INSIGHT
+    const sheetUrl = 'https://cors-anywhere.herokuapp.com/https://docs.google.com/spreadsheets/d/1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc/gviz/tq?tqx=out:csv';
+    
+    const trendingHeadline = document.getElementById('trending-headline');
+    const trendingQuestionTitle = document.getElementById('trending-question-title');
+    const trendingInsightContainer = document.querySelector('.insight-stat');
 
     function parseCSV(csvText) {
         const rows = csvText.trim().split('\n');
@@ -116,170 +114,103 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return data;
     }
-
-    // --- Chart Drawing Function ---
-    function displayMirroredBarChart(data) {
-        if (!chartContainer) return;
-
+    
+    function generateInsights(data) {
+        const headlines = ["Today's Insight", "This Week's Finding", "This Month's Trending Topic"];
+        const insights = [];
         const questionData = data.filter(row => row.QuestionID === 'Q1');
-        if (chartTitle) chartTitle.textContent = questionData[0]?.QuestionText || "What is the most important quality in a partner?";
-
-        chartContainer.innerHTML = ''; // Clear previous chart or loading text
-
-        if (questionData.length === 0) {
-            chartContainer.innerHTML = '<p class="loading-text">No data available for the selected filters.</p>';
-            return;
-        }
-
-        const maleResponses = questionData.filter(r => r.Gender === 'Male');
-        const femaleResponses = questionData.filter(r => r.Gender === 'Female');
-        const maleCounts = countResponses(maleResponses);
-        const femaleCounts = countResponses(femaleResponses);
-        const combinedTotals = {};
-        const allKeys = [...new Set([...Object.keys(maleCounts), ...Object.keys(femaleCounts)])];
-        allKeys.forEach(key => {
-            combinedTotals[key] = (maleCounts[key] || 0) + (femaleCounts[key] || 0);
-        });
-        
-        const top5Responses = Object.keys(combinedTotals).sort((a, b) => combinedTotals[b] - combinedTotals[a]).slice(0, 5);
-
-        const headerRow = document.createElement('div');
-        headerRow.className = 'chart-row chart-headers';
-        headerRow.innerHTML = `
-            <div>He/Him</div>
-            <div>Response</div>
-            <div>She/Her</div>
-        `;
-        chartContainer.appendChild(headerRow);
-
-        top5Responses.forEach(response => {
-            const maleCount = maleCounts[response] || 0;
-            const femaleCount = femaleCounts[response] || 0;
-            const malePercent = maleResponses.length > 0 ? (maleCount / maleResponses.length) * 100 : 0;
-            const femalePercent = femaleResponses.length > 0 ? (femaleCount / femaleResponses.length) * 100 : 0;
-            const commonGroundPercent = Math.min(malePercent, femalePercent);
-
-            const row = document.createElement('div');
-            row.className = 'chart-row animate-up';
-            row.innerHTML = `
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-container">
-                        <div class="chart-bar bar-him" data-full-width="${malePercent}" data-common-width="${commonGroundPercent}"></div>
-                    </div>
-                    <span class="bar-percentage">${Math.round(malePercent)}%</span>
-                </div>
-                <div class="bar-label">${response}</div>
-                <div class="chart-bar-wrapper">
-                    <span class="bar-percentage">${Math.round(femalePercent)}%</span>
-                    <div class="chart-bar-container">
-                        <div class="chart-bar bar-her" data-full-width="${femalePercent}" data-common-width="${commonGroundPercent}"></div>
-                    </div>
-                </div>
-            `;
-            chartContainer.appendChild(row);
-
-            setTimeout(() => {
-                const bars = row.querySelectorAll('.chart-bar');
-                bars.forEach(bar => bar.style.width = `${bar.dataset.fullWidth}%`);
-            }, 100);
-        });
-        
-        const newAnimatedElements = chartContainer.querySelectorAll('.animate-up');
-        newAnimatedElements.forEach(el => observer.observe(el));
-    }
-
-    function countResponses(dataArray) {
-        const counts = {};
-        dataArray.forEach(row => {
+        const responseCounts = {};
+        questionData.forEach(row => {
             const response = row.ResponseValue;
-            counts[response] = (counts[response] || 0) + 1;
+            responseCounts[response] = (responseCounts[response] || 0) + 1;
         });
-        return counts;
-    }
-    
-    // --- New Filter Logic ---
-    function applyFiltersAndRedraw() {
-        let filteredData = [...masterData];
-
-        // Location Filter
-        if (currentFilters.location !== 'all') {
-            filteredData = filteredData.filter(row => row.Location === currentFilters.location);
-        }
-
-        // Age Group Filter
-        if (currentFilters.ageGroup !== 'all') {
-            const [min, max] = currentFilters.ageGroup.replace('+', '-999').split('-').map(Number);
-            filteredData = filteredData.filter(row => {
-                const age = Number(row.Age);
-                return age >= min && age <= max;
+        const sortedResponses = Object.entries(responseCounts).sort(([,a],[,b]) => b-a);
+        if (sortedResponses.length > 0) {
+            const topResponse = sortedResponses[0][0];
+            const topResponseCount = sortedResponses[0][1];
+            const percentage = Math.round((topResponseCount / questionData.length) * 100);
+            insights.push({
+                headline: headlines[0],
+                questionText: questionData[0]?.QuestionText,
+                statNumber: `${percentage}%`,
+                statCaption: `of all respondents chose '${topResponse}' as the most important quality in a partner.`
             });
         }
         
-        // Redraw the chart with the newly filtered data
-        displayMirroredBarChart(filteredData);
-    }
-    
-    function populateLocationFilter(data) {
-        if (!locationFilter) return;
-        const locations = [...new Set(data.map(item => item.Location).filter(Boolean))];
-        
-        // Clear existing options except for "All"
-        locationFilter.innerHTML = '<option value="all">All</option>';
-
-        locations.forEach(location => {
-            const option = document.createElement('option');
-            option.value = location;
-            option.textContent = location;
-            locationFilter.appendChild(option);
-        });
-    }
-
-    // --- Event Listeners for Filters ---
-    if (locationFilter) {
-        locationFilter.addEventListener('change', (e) => {
-            currentFilters.location = e.target.value;
-            applyFiltersAndRedraw();
-        });
-    }
-
-    ageFilterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // UI update for active class
-            ageFilterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            // Logic update
-            currentFilters.ageGroup = button.textContent;
-            applyFiltersAndRedraw();
-        });
-    });
-
-    if (commonGroundToggle) {
-        commonGroundToggle.addEventListener('change', () => {
-            chartContainer.classList.toggle('common-ground-active');
-            const bars = document.querySelectorAll('.chart-bar');
-            bars.forEach(bar => {
-                const width = commonGroundToggle.checked ? bar.dataset.commonWidth : bar.dataset.fullWidth;
-                bar.style.width = `${width}%`;
+        const femaleResponses = questionData.filter(r => r.Gender === 'Female');
+        if (femaleResponses.length > 0) {
+             const femaleCounts = {};
+             femaleResponses.forEach(row => {
+                const response = row.ResponseValue;
+                femaleCounts[response] = (femaleCounts[response] || 0) + 1;
             });
-        });
+            const topFemaleResponse = Object.entries(femaleCounts).sort(([,a],[,b]) => b-a)[0][0];
+            insights.push({
+                headline: headlines[1],
+                questionText: questionData[0]?.QuestionText,
+                statNumber: `'${topFemaleResponse}'`,
+                statCaption: `was the most frequent answer among female respondents.`
+            });
+        }
+        
+        const maleResponses = questionData.filter(r => r.Gender === 'Male');
+        if (maleResponses.length > 0) {
+             const maleCounts = {};
+             maleResponses.forEach(row => {
+                const response = row.ResponseValue;
+                maleCounts[response] = (maleCounts[response] || 0) + 1;
+            });
+            const topMaleResponse = Object.entries(maleCounts).sort(([,a],[,b]) => b-a)[0][0];
+            insights.push({
+                headline: headlines[2],
+                questionText: questionData[0]?.QuestionText,
+                statNumber: `'${topMaleResponse}'`,
+                statCaption: `was the most frequent answer among male respondents.`
+            });
+        }
+
+        return insights;
     }
 
-    // --- Initial Data Fetch ---
+    function cycleInsights(insights) {
+        if (!trendingHeadline || insights.length === 0) return;
+        let currentIndex = 0;
+        const updateDOM = () => {
+            const insight = insights[currentIndex];
+            trendingHeadline.textContent = insight.headline;
+            trendingQuestionTitle.textContent = insight.questionText;
+            trendingInsightContainer.querySelector('#trending-stat-number').textContent = insight.statNumber;
+            trendingInsightContainer.querySelector('#trending-stat-caption').textContent = insight.statCaption;
+        };
+        updateDOM();
+        setInterval(() => {
+            trendingHeadline.classList.add('fade-out');
+            trendingQuestionTitle.classList.add('fade-out');
+            trendingInsightContainer.classList.add('fade-out');
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % insights.length;
+                updateDOM();
+                trendingHeadline.classList.remove('fade-out');
+                trendingQuestionTitle.classList.remove('fade-out');
+                trendingInsightContainer.classList.remove('fade-out');
+            }, 500);
+        }, 7000);
+    }
+
     fetch(sheetUrl)
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.text();
         })
         .then(csvText => {
-            masterData = parseCSV(csvText);
-            populateLocationFilter(masterData);
-            displayMirroredBarChart(masterData); // Initial display with all data
+            const data = parseCSV(csvText);
+            const insights = generateInsights(data);
+            cycleInsights(insights);
         })
         .catch(error => {
             console.error('Error fetching sheet data:', error);
-            if(chartContainer) {
-                chartContainer.innerHTML = '<p class="loading-text">Could not load insights.</p>';
+            if(trendingQuestionTitle) {
+                trendingQuestionTitle.textContent = 'Could not load insights at this time.';
             }
         });
 });

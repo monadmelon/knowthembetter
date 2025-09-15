@@ -7,7 +7,7 @@
     <meta name="description" content="A non-profit platform collecting real-time data from men and women to reduce miscommunication and build empathy.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -26,7 +26,7 @@
         <nav class="main-nav">
             <ul>
                 <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#data-explorer">Explore Data</a></li>
+                <li><a href="insights.html">Explore Data</a></li>
                 <li><a href="#our-values">Our Values</a></li>
             </ul>
         </nav>
@@ -42,11 +42,16 @@
                 <div class="perspective-selector">
                     <p>Explore the perspective of...</p>
                     <div class="perspective-buttons">
-                        <a href="#data-explorer" class="perspective-btn btn-him">He/Him</a>
-                        <a href="#data-explorer" class="perspective-btn btn-her">She/Her</a>
+                        <a href="insights.html?gender=Male" class="perspective-btn btn-him">He/Him</a>
+                        <a href="insights.html?gender=Female" class="perspective-btn btn-her">She/Her</a>
                     </div>
                 </div>
             </div>
+            
+            <a href="#how-it-works" class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+            
         </section>
 
         <section id="how-it-works" class="fullscreen-panel">
@@ -73,37 +78,16 @@
         </section>
 
         <section id="data-explorer" class="fullscreen-panel">
-            <div class="insight-card-container panel-content reveal-on-scroll">
-                <h2>Explore the Insights</h2>
-                <div class="filters">
-                    <div class="filter-group">
-                        <label for="location">Location:</label>
-                        <select id="location" name="location">
-                            <option value="all">All</option>
-                            <option value="kochi">Kochi</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Age Group:</label>
-                        <button class="filter-btn active">All</button>
-                        <button class="filter-btn">18-25</button>
-                        <button class="filter-btn">26-35</button>
-                        <button class="filter-btn">35+</button>
-                    </div>
-                </div>
-                
-                <p class="chart-title" id="chart-title">What is the most important quality in a partner?</p>
-                
-                <div class="chart-container" id="chart-container">
-                    <p class="loading-text">Loading insights...</p>
-                </div>
+            <div class="panel-content reveal-on-scroll">
+                <h2 id="trending-headline">This Week's Most Discussed Question</h2>
+                <p class="chart-title" id="trending-question-title">Loading question...</p>
 
-                <div class="common-ground-toggle">
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="common-ground-checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <span>Show Common Ground</span>
+                <div class="trending-insight-container">
+                    <div class="insight-stat">
+                        <div class="stat-number" id="trending-stat-number">...</div>
+                        <div class="stat-caption" id="trending-stat-caption">Loading insight...</div>
+                    </div>
+                    <a href="insights.html" class="cta-button primary">Explore All Insights</a>
                 </div>
             </div>
         </section>
@@ -166,22 +150,22 @@
             <div class="panel-content reveal-on-scroll">
                 <h2>Our Guiding Principles</h2>
                 <div class="values-bar">
-                    <div class="value-badge">
+                    <div class="value-badge animate-up">
                         <i class="fas fa-check-circle"></i>
                         <h3>Authenticity</h3>
                         <p>Raw, real, unfiltered (but respectful) voices.</p>
                     </div>
-                    <div class="value-badge">
+                    <div class="value-badge animate-up">
                         <i class="fas fa-search"></i>
                         <h3>Curiosity</h3>
                         <p>A genuine desire to understand, not to judge.</p>
                     </div>
-                    <div class="value-badge">
+                    <div class="value-badge animate-up">
                         <i class="fas fa-handshake"></i>
                         <h3>Bridging</h3>
                         <p>Building connections, not highlighting divisions.</p>
                     </div>
-                    <div class="value-badge">
+                    <div class="value-badge animate-up">
                         <i class="fas fa-lightbulb"></i>
                         <h3>Clarity</h3>
                         <p>Making complex emotions understandable through data.</p>
@@ -195,13 +179,13 @@
                 <h2>Join The Mission</h2>
                 <p class="sub-headline">This project is powered by people like you. Help us gather more stories and build a more understanding world.</p>
                 <div class="support-grid">
-                    <div class="support-card">
+                    <div class="support-card animate-up">
                         <i class="fas fa-hands-helping"></i>
                         <h3>Volunteer</h3>
                         <p>Help us with on-the-ground data collection, community outreach, or content moderation.</p>
                         <a href="#" class="cta-button support-btn btn-volunteer">Apply to Volunteer</a>
                     </div>
-                    <div class="support-card">
+                    <div class="support-card animate-up">
                         <i class="fas fa-heart"></i>
                         <h3>Donate</h3>
                         <p>Your contribution helps fund our research, maintain the platform, and expand our reach to new communities.</p>
