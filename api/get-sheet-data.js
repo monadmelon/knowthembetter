@@ -4,7 +4,7 @@
 export default async function handler(request, response) {
   const sheetId = '1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc';
   // Note: We use the '/gviz/tq' endpoint which is a simpler way to get sheet data.
-  const sheetUrl = `const sheetUrl = '/api/get-sheet-data';`;
+  const sheetUrl = '/api/get-sheet-data';
 
   try {
     const fetchResponse = await fetch(sheetUrl);
