@@ -3,24 +3,26 @@
 
 export default async function handler(request, response) {
   const sheetId = '1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc';
-  // Note: We use the '/gviz/tq' endpoint which is a simpler way to get sheet data.
-  // FIXED: This now correctly points to the Google Sheet URL.
   const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
 
   try {
     const fetchResponse = await fetch(sheetUrl);
     if (!fetchResponse.ok) {
-      // If Google returns an error, pass it along.
       return response.status(fetchResponse.status).json({ error: 'Failed to fetch from Google Sheets' });
     }
     
     const csvText = await fetchResponse.text();
 
-    // Set headers to allow our website to access this data
-    response.setHeader('Access-Control-Allow-Origin', '*'); 
+    // NEW: Add cache-control headers to prevent Vercel from storing a stale copy.
+    // This tells the browser and Vercel's servers not to cache this response.
+    response.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    response.setHeader('Pragma', 'no-cache');
+    response.setHeader('Expires', '0');
+
+    // Set content type for the response
     response.setHeader('Content-Type', 'text/csv');
     
-    // Send the CSV data back to our website's JavaScript
+    // Send the fresh CSV data back to our website's JavaScript
     return response.status(200).send(csvText);
 
   } catch (error) {
