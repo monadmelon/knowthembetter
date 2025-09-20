@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const sheetUrl = '/api/get-sheet-data';
+    const sheetUrl = '/api/get-sheet-data.php'; // <--- ONLY CHANGE IS HERE
     const questionGrid = document.getElementById('question-grid');
     const locationFilter = document.getElementById('location-filter');
     const genderFilter = document.getElementById('gender-filter');

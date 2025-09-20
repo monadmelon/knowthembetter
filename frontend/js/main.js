@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. GOOGLE SHEET DATA FOR TRENDING INSIGHT
     const trendingQuestionTitle = document.getElementById('trending-question-title');
     if (trendingQuestionTitle) {
-        const sheetUrl = '/api/get-sheet-data';
+        const sheetUrl = '/api/get-sheet-data.php'; // <--- ONLY CHANGE IS HERE
         const trendingHeadline = document.getElementById('trending-headline');
         const trendingInsightContainer = document.querySelector('.insight-stat');
 

@@ -1,32 +1,31 @@
-// This is a serverless function that will fetch data from Google Sheets.
-// It acts as our private, secure middleman to avoid CORS errors.
+<?php
+// This PHP file replaces the Vercel Node.js function.
+// It fetches the CSV data and serves it to the frontend.
 
-export default async function handler(request, response) {
-  const sheetId = '1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc';
-  const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
+// 1. Define the Google Sheet URL
+$sheetId = '1Co4oNp5L6aXUx6_jdGGFtRSzyNKg9aPc';
+$sheetUrl = "https://docs.google.com/spreadsheets/d/{$sheetId}/gviz/tq?tqx=out:csv";
 
-  try {
-    const fetchResponse = await fetch(sheetUrl);
-    if (!fetchResponse.ok) {
-      return response.status(fetchResponse.status).json({ error: 'Failed to fetch from Google Sheets' });
-    }
-    
-    const csvText = await fetchResponse.text();
+// 2. Attempt to fetch the CSV content using file_get_contents
+// The '@' silences PHP warnings if the fetch fails
+$csvText = @file_get_contents($sheetUrl);
 
-    // NEW: Add cache-control headers to prevent Vercel from storing a stale copy.
-    // This tells the browser and Vercel's servers not to cache this response.
-    response.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    response.setHeader('Pragma', 'no-cache');
-    response.setHeader('Expires', '0');
-
-    // Set content type for the response
-    response.setHeader('Content-Type', 'text/csv');
-    
-    // Send the fresh CSV data back to our website's JavaScript
-    return response.status(200).send(csvText);
-
-  } catch (error) {
-    console.error('Error in serverless function:', error);
-    return response.status(500).json({ error: 'Internal Server Error' });
-  }
+if ($csvText === false) {
+    // Error handling if the fetch fails (e.g., network issue or restriction)
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Failed to fetch data from Google Sheets. The server could not reach the external API.']);
+    exit;
 }
+
+// 3. Set response headers for the browser
+// This ensures caching is disabled, similar to the original Node.js logic
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma', 'no-cache');
+header('Expires', '0');
+
+// 4. Set content type and send the data back to the frontend
+header('Content-Type: text/csv');
+http_response_code(200);
+echo $csvText;
+?>
